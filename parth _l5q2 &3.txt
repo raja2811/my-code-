@@ -1,0 +1,41 @@
+sys/sys as sysdba
+connect sys/sys as sysdba
+spool c:\database\SQL\parth_l5q2q3.txt
+SELECT to_char(sysdate,'DD Month YYYY Day HH:MI:SS Am') FROM dual;
+DROP USER c##raja28march CASCADE;
+CREATE USER c##raja28march IDENTIFIED BY 2807;
+GRANT connect , resource TO c##raja28march;
+ALTER USER c##raja28march QUOTA 100M on USERs;
+connect c##raja28march/2807;
+create table course (cid NUMBER,cname VARCHAR2(50) not null,credits NUMBER, constraint  cid_pk primary key(cid));
+create table term (Tid NUMBER,description VARCHAR2(50) not null, status varchar2(10) constraint check_status check(status in('open','close' )), constraint tid_pk primary key(tid));
+create table location (locid NUMBER,building VARCHAR2(50) not null,roomno NUMBER unique, constraint locid_pk primary key (locid));
+create table student(sid NUMBER,sname VARCHAR2(50) not null,birthdate DATE, constraint sid _pk primary key(sid));
+create table course_section (csecid NUMBER,maxcapacity NUMBER not null, cid NUMBER, Tid NUMBER, locid NUMBER, constraint csecid_pk primary key(csecid), constraint cid_fk foreign key(cid) references course(cid),constraint tid_fk foreign key(tid) references term(tid), constraint locid_fk foreign key(locid) references location(locid));
+create table enrollment (sid NUMBER,csecid NUMBER,grade NUMBER,constraint sid_csecid_pk primary key(sid,csecid), constraint sid_fk foreign key(sid) references student(sid), constraint csecid_fk foreign key(csecid) references course_section(csecid));
+Q3-- insert data in tables
+insert into course values (1, 'Database',3);
+insert into term values (1, 'abc', 'open');
+insert into location values (1,'Thasra', 2807);
+insert into course_section values(14,10,1,1,1);
+insert into course_section values(15,10,1,1,1);
+insert into student values(1,'parth','28-jul-1998');
+insert into enrollment values(1,14,null);
+insert into enrollment values(1,15,null);
+update course_section set maxcapacity =25 where csecid = 15;
+SELECT * from Course;
+SELECT * from Term;
+SELECT * from Location;
+SELECT * from Student;
+SELECT * from Course_Section;
+SELECT * from Enrollment;
+--spool off;
+spool off;
+
+ 
+
+
+
+
+
+
